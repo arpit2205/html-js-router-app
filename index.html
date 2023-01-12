@@ -11,9 +11,15 @@
   <body>
     <div id="root">
       <nav id="nav">
-        <a href="/" onclick="route()">Home (Private route)</a>
-        <a href="/signup" onclick="route()" class="right">Signup</a>
-        <a href="/login" onclick="route()">Login</a>
+        <a href="/" id="home-link" onclick="route()">Home</a>
+        <a href="/signup" id="signup-link" onclick="route()" class="right"
+          >Signup</a
+        >
+        <a href="/login" id="login-link" onclick="route()">Login</a>
+
+        <button type="button" id="logout-btn" onclick="handleLogout()">
+          Logout
+        </button>
       </nav>
       <div id="router-view"></div>
     </div>
