@@ -27,7 +27,8 @@ const setError = function (msg) {
 
 const fetchNews = async function () {
   const response = await fetch(
-    "https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=78ecece3f7a64a41b09b3818536ae270"
+    // "https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=78ecece3f7a64a41b09b3818536ae270"
+    "https://saurav.tech/NewsAPI/top-headlines/category/business/in.json"
   );
   const data = await response.json();
   const articles = data.articles;
@@ -59,7 +60,9 @@ const fetchNews = async function () {
   </div>`;
   });
 
-  newsRootDiv.innerHTML = html;
+  setTimeout(() => {
+    newsRootDiv.innerHTML = html;
+  }, 500);
 };
 
 const fetchExpenses = function () {
