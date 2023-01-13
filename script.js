@@ -62,7 +62,7 @@ const fetchNews = async function () {
 
   setTimeout(() => {
     newsRootDiv.innerHTML = html;
-  }, 500);
+  }, 1000);
 };
 
 const fetchExpenses = function () {
