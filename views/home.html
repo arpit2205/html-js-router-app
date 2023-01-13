@@ -1,4 +1,31 @@
-<div class="container">
-  <h1 id="home">Home: Private content</h1>
-  <h4>You are logged in!!!</h4>
+<div class="container" id="home-container">
+  <h1 id="home">Expense Manager 💸</h1>
+  <form id="expense-form">
+    <input id="expense-title-input" type="text" placeholder="Expense title" />
+
+    <input type="number" placeholder="Amount" id="expense-amount-input" />
+
+    <select name="Category" id="category-select">
+      <option value="Food">Food</option>
+      <option value="Travel">Travel</option>
+      <option value="Utility">Utility</option>
+      <option value="Other">Other</option>
+    </select>
+    <button type="button" id="add-expense-btn" onclick="handleAddExpense()">
+      Add expense
+    </button>
+  </form>
+
+  <div id="expenses-root">
+    <!-- <div class="expense-card">
+      <div class="expense-left">
+        <h1 class="expense-title">Expense title</h1>
+        <p class="expense-category">Category</p>
+        <p class="expense-date">Date</p>
+      </div>
+      <div class="expense-right">
+        <h1 class="expense-amount">&#8377; 1290</h1>
+      </div>
+    </div> -->
+  </div>
 </div>

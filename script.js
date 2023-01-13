@@ -2,6 +2,7 @@ const routes = {
   "/": "/views/home.html",
   "/login": "/views/login.html",
   "/signup": "/views/signup.html",
+  "/news": "/views/news.html",
   404: "/views/404.html",
 };
 
@@ -24,6 +25,77 @@ const setError = function (msg) {
   errorField.innerHTML = "Error: " + msg;
 };
 
+const fetchNews = async function () {
+  const response = await fetch(
+    "https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=78ecece3f7a64a41b09b3818536ae270"
+  );
+  const data = await response.json();
+  const articles = data.articles;
+
+  const newsRootDiv = document.getElementById("news-root");
+
+  let html = "";
+
+  articles.map((article) => {
+    html += `<div class="news-card">
+    <div class="news-image">
+      <img
+        src="${article.urlToImage}"
+      />
+    </div>
+    <div class="news-content">
+      <a
+        href="${article.url}"
+        target="_blank"
+        class="news-title"
+        >${article.title}</a
+      >
+      <p class="news-description">
+        ${article.description}
+      </p>
+      <p class="news-date">Published at ${article.publishedAt}</p>
+      <p class="news-source">Source ${article.source.name}</p>
+    </div>
+  </div>`;
+  });
+
+  newsRootDiv.innerHTML = html;
+};
+
+const fetchExpenses = function () {
+  const authUser = JSON.parse(localStorage.getItem("auth-user"));
+
+  if (!authUser.expenses) {
+    return;
+  }
+
+  authUser.expenses.sort((a, b) => b.id - a.id);
+
+  let html = ``;
+  authUser.expenses.map((expense) => {
+    html += `<div class="expense-card">
+    <div class="expense-left">
+      <h1 class="expense-title">${expense.title}</h1>
+      <p class="expense-category">${expense.category}</p>
+      <p class="expense-date">${new Date(expense.id)
+        .toString()
+        .slice(0, 24)}</p>
+    </div>
+    <div class="expense-right">
+      <h1 class="expense-amount">&#8377; ${expense.amount}</h1>
+      <button class="remove-btn" id="${
+        expense.id
+      }" onclick="handleRemoveExpense()">REMOVE</button>
+    </div>
+  </div>`;
+  });
+
+  setTimeout(() => {
+    const expenseRootDiv = document.getElementById("expenses-root");
+    expenseRootDiv.insertAdjacentHTML("afterbegin", html);
+  }, 100);
+};
+
 // Router
 const route = function (event) {
   event = event || window.event;
@@ -34,6 +106,7 @@ const route = function (event) {
 
 // A general function to make URL redirections
 const redirectTo = async function (path) {
+  if (path === "/") fetchExpenses();
   window.history.pushState({}, "", path);
   const html = await fetch(routes[path]).then((data) => data.text());
   document.getElementById("router-view").innerHTML = html;
@@ -45,7 +118,7 @@ const handleLocation = async function () {
   const authUser = JSON.parse(localStorage.getItem("auth-user"));
 
   // pvt route "/"
-  if (path === "/") {
+  if (path === "/" || path === "/news") {
     // check if a user is logged in
     if (!authUser) {
       redirectTo("/login");
@@ -55,6 +128,14 @@ const handleLocation = async function () {
     } else {
       toggleLogoutButton("show");
       toggleLoginLinks("hide");
+
+      if (path === "/") {
+        fetchExpenses();
+      }
+
+      if (path === "/news") {
+        fetchNews();
+      }
     }
   }
 
@@ -128,6 +209,7 @@ const handleSignup = function () {
     username,
     email,
     pwd,
+    expenses: [],
   };
 
   // add current user to the array of users in localStorage
@@ -172,8 +254,80 @@ const handleLogin = function () {
 };
 
 const handleLogout = function () {
+  const authUser = JSON.parse(localStorage.getItem("auth-user"));
+  const users = JSON.parse(localStorage.getItem("users"));
+
+  const found = users.filter((user) => user.id === authUser.id)[0];
+  const index = users.indexOf(found);
+  users[index] = authUser;
+
+  localStorage.setItem("users", JSON.stringify(users));
   localStorage.removeItem("auth-user");
+
   toggleLogoutButton("hide");
   toggleLoginLinks("show");
   redirectTo("/login");
+};
+
+const handleAddExpense = function () {
+  const expenseTitleRef = document.getElementById("expense-title-input");
+  const amountRef = document.getElementById("expense-amount-input");
+  const categoryRef = document.getElementById("category-select");
+
+  const expenseTitle = expenseTitleRef.value;
+  const amount = amountRef.value;
+  const category = categoryRef.value;
+
+  if (!expenseTitle || !amount || !category) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  const newExpense = {
+    id: Date.now(),
+    title: expenseTitle,
+    amount: amount,
+    category: category,
+  };
+
+  const authUser = JSON.parse(localStorage.getItem("auth-user"));
+  authUser.expenses.push(newExpense);
+  localStorage.setItem("auth-user", JSON.stringify(authUser));
+
+  let html = `<div class="expense-card">
+  <div class="expense-left">
+    <h1 class="expense-title">${expenseTitle}</h1>
+    <p class="expense-category">${category}</p>
+    <p class="expense-date">${new Date(newExpense.id)
+      .toString()
+      .slice(0, 24)}</p>
+  </div>
+  <div class="expense-right">
+    <h1 class="expense-amount">&#8377; ${amount}</h1>
+    <button class="remove-btn" id="${
+      newExpense.id
+    }" onclick="handleRemoveExpense()">REMOVE</button>
+  </div>
+</div>`;
+
+  const expenseRootDiv = document.getElementById("expenses-root");
+  expenseRootDiv.insertAdjacentHTML("afterbegin", html);
+
+  // reset values
+  expenseTitleRef.value = "";
+  amountRef.value = 0;
+  categoryRef.value = "Food";
+};
+
+const handleRemoveExpense = function () {
+  const authUser = JSON.parse(localStorage.getItem("auth-user"));
+  const removeId = window.event.target.attributes[1].nodeValue;
+  authUser.expenses = authUser.expenses.filter(
+    (expense) => expense.id !== +removeId
+  );
+  localStorage.setItem("auth-user", JSON.stringify(authUser));
+
+  const toBeRemovedExpense =
+    document.getElementById(removeId).parentElement.parentElement;
+  toBeRemovedExpense.remove();
 };

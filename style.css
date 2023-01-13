@@ -55,6 +55,10 @@
   flex-direction: column;
 }
 
+#home-link {
+  padding-right: 20px;
+}
+
 input {
   width: 100%;
   margin: 8px 0;
@@ -107,4 +111,169 @@ button:hover {
 
 h4 {
   margin-top: 24px;
+}
+
+#news-root {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 32px;
+}
+
+.news-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  margin: 0;
+  padding: 24px;
+  transition: all 0.2s;
+  border-radius: 4px;
+}
+
+.news-card:hover {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.news-image img {
+  width: 400px;
+  border-radius: 4px;
+}
+.news-content {
+  padding: 24px;
+  text-align: left;
+}
+
+.news-title {
+  text-decoration: none;
+  color: slateblue;
+  font-weight: bolder;
+  font-size: 24px;
+  transition: all 0.2s;
+}
+
+.news-title:hover {
+  opacity: 0.6;
+}
+
+.news-description {
+  font-weight: 600;
+  color: #888888;
+  margin-top: 8px;
+  text-align: justify;
+}
+
+.news-date,
+.news-source {
+  color: #444444;
+  font-weight: bold;
+}
+
+.news-date {
+  margin-top: 16px;
+  margin-bottom: 4px;
+}
+
+#home-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#expense-form {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+}
+
+#expense-title-input,
+#expense-amount-input {
+  font-size: 24px;
+  padding: 16px 24px;
+  font-weight: bold;
+  width: 400px;
+  margin-right: 8px;
+}
+
+#expense-amount-input {
+  width: 200px;
+  margin-right: 0;
+}
+
+#category-select {
+  margin: 0 24px;
+  font-size: 24px;
+  padding: 16px 24px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  /* background-color: rgba(106, 90, 205, 0.1); */
+  color: slateblue;
+  font-weight: bold;
+}
+
+#add-expense-btn {
+  font-size: 24px;
+  padding: 16px 24px;
+  box-shadow: 0px 4px 50px slateblue;
+}
+
+#expenses-root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 32px;
+}
+
+.expense-card {
+  padding: 24px 40px;
+  width: 72%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.expense-left {
+  text-align: left;
+}
+
+.expense-right {
+  text-align: right;
+  display: flex;
+  justify-content: center;
+}
+
+.expense-title {
+  color: slateblue;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.expense-category {
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 4px;
+}
+
+.expense-date {
+  margin-top: 12px;
+}
+
+.expense-amount {
+  font-size: 32px;
+  margin-right: 24px;
+}
+
+.remove-btn {
+  font-size: 16px;
+  color: red;
+  background-color: rgba(252, 49, 49, 0.08);
 }
