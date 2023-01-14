@@ -184,9 +184,12 @@ const handleSignup = function () {
     return;
   }
 
-  // password length validation
-  if (pwd.length < 8) {
-    setError("Password must contain at least 8 characters");
+  // password validation
+  const re = /^(?=.*[\d])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,16}$/;
+  if (!re.test(pwd)) {
+    setError(
+      "Password must contain 8-16 characters, a number and a special character"
+    );
     return;
   }
 
