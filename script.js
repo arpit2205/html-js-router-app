@@ -60,9 +60,7 @@ const fetchNews = async function () {
   </div>`;
   });
 
-  setTimeout(() => {
-    newsRootDiv.innerHTML = html;
-  }, 1000);
+  newsRootDiv.innerHTML = html;
 };
 
 const fetchExpenses = function () {
@@ -137,7 +135,9 @@ const handleLocation = async function () {
       }
 
       if (path === "/news") {
-        fetchNews();
+        setTimeout(() => {
+          fetchNews();
+        }, 500);
       }
     }
   }
